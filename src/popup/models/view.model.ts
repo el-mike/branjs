@@ -1,0 +1,4 @@
+export enum View {
+  MAIN_MENU = 'MAIN_MENU',
+  PROPERTIES_LIST = 'PROPERTIES_LIST'
+}

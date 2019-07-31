@@ -1,0 +1,18 @@
+.d-flex {
+  display: flex;
+}
+
+.im-icon-btn {
+  height: 30px;
+  width: 30px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  justify-content: center;
+  color: #2b2e33;
+}
+
+.im-icon-btn:hover {
+  background-color: #3486ef;
+  color: #fff;
+}
