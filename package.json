@@ -1,7 +1,7 @@
 {
-  "name": "immomio-test-kit",
+  "name": "branjs",
   "version": "1.0.0",
-  "description": "Immomio test kit for improving testing experience",
+  "description": "Simple FE framework which could have done some more.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
