@@ -6,7 +6,7 @@ export class Queue<T> {
   }
 
   public get isEmpty() {
-    return this._queue.length > 0;
+    return this._queue.length === 0;
   }
 
   public constructor() {
