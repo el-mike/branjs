@@ -7,15 +7,17 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    background: './src/background/index.ts',
-    popup: './src/popup/index.ts',
-    options: './src/options/index.ts',
+    todoapp: './examples/todo-app/index.ts',
   },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist')
   },
   devtool: 'inline-source-map',
+  devServer: {
+    contentBase: path.resolve(__dirname, 'dist'),
+    port: 9000
+  },
   module: {
     rules: [
       {
@@ -63,19 +65,11 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: 'popup.html',
-      template: './src/popup/index.html',
-      chunks: ['popup']
+      filename: 'index.html',
+      template: './examples/todo-app/index.html',
+      chunks: ['todoapp']
     }),
-    new HtmlWebpackPlugin({
-      filename: 'options.html',
-      template: './src/options/options.html',
-      chunks: ['options']
-    }),
-    new CopyWebpackPlugin([
-      { from: './src/assets/ext-icons', to: 'assets/ext-icons' },
-      './src/manifest.json'
-    ]),
+    new CopyWebpackPlugin([]),
     new CleanWebpackPlugin()
   ]
 };

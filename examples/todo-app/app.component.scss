@@ -1,0 +1,99 @@
+@import "./styles/base.scss";
+@import "./styles/buttons.scss";
+@import "./styles/inputs.scss";
+
+body {
+  width: 300px;
+  margin: 0;
+}
+
+.container {}
+
+.header {
+  position: relative;
+  justify-content: center;
+  background-color: #f7f7f7;
+
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.header img {
+  width: 100px;
+}
+
+.header .arrow-back-btn {
+  position: absolute;
+  left: 20px;
+  top: 15px;
+  margin-right: 20px;
+}
+
+.main-menu {}
+
+.menu-header {
+  padding: 0;
+  margin: 0;
+  flex-direction: row;
+  font-size: 18px;
+  font-weight: 600;
+  color: #3486ef;
+  padding: 10px 20px;;
+  background-color: #fff;
+  justify-content: flex-start;
+  align-items: center;
+  user-select: none;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.list {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  flex-direction: column;
+}
+
+.list .list-item {
+  height: 30px;
+  font-size: 14px;
+  color: #2b2e33;
+  padding: 10px 20px;;
+  background-color: #fff;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.list .list-item .arrow {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.list .list-item:hover {
+  background-color: #3486ef;
+  color: #fff;
+}
+
+
+.properties-list-menu {
+  flex-direction: column;
+}
+
+.properties-list .list-item {
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.properties-list .list-item span {
+  width: 100%;
+}
+
+.properties-list .list-item .property-name {
+  font-weight: bold;
+}
+
+
+.properties-list .list-item .property-description {
+  font-size: 10px;
+}
