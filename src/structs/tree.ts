@@ -108,14 +108,15 @@ export class Tree<T> implements ITree<T> {
   }
 
   private _getTraversalMethod(traversalType: TreeTraversal) {
-    if (traversalType === TreeTraversal.DEPTH_FIRST) {
-      return this.traverseDF;
-    }
-
     if (traversalType === TreeTraversal.BREADTH_FIRST) {
       return this.traverseBF;
     }
 
+    /**
+     * There are only two types of traversal.
+     * If traversalType is not BREADTH_FIRST, or it's not defined,
+     * DEPTH_FIRST will be returned.
+     */
     return this.traverseDF;
   }
 }

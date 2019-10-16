@@ -91,6 +91,11 @@ export class Parser {
   private _getBindings(element: Node) {
     const innerText = element.textContent;
 
+    /**
+     * Interpolation brackets themselves makes 4 characters already,
+     * it does not make sense to create a binding when there is less than 5 characters
+     * in the textContent property.
+     */
     if (!innerText || innerText.length < 5) {
       return [];
     }

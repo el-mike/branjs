@@ -55,7 +55,7 @@ export class Compiler {
   }
 
   public compile<T>(component: Type<T>, host: HTMLElement) {
-    
+    return this._compileViewRef(component, host);
   }
 
   /**
@@ -65,7 +65,8 @@ export class Compiler {
     component: Type<T>,
     host: HTMLElement,
     viewRefTree: Tree<ViewRef> = null,
-    parentViewRef: ViewRef = null
+    parentViewRef: ViewRef = null,
+    hostViewNode: TreeNode<ViewNode> = null,
   ) {
     const componentRef = this._componentFactory.create(component, host);
 
@@ -94,6 +95,10 @@ export class Compiler {
       viewRefTree.add(viewRef, parentViewRef);
     }
 
+    if (hostViewNode) {
+      hostViewNode.data.viewRef = viewRef;
+    }
+
     /**
      * Traverse the newly created ViewRef's ViewNode Tree and search for
      * child components. Every time component selector is found, the compiler
@@ -109,20 +114,22 @@ export class Compiler {
      */
     viewRef.nodesTree.traverseDF(viewNode => {
       if (!viewNode.isRoot && viewNode.data.componentSelector) {
-        const childViewRef = this._compileViewRef(
+        // const childViewRef = this._compileViewRef(
+        this._compileViewRef(  
           this._componentsRegistry.getBySelector(viewNode.data.componentSelector),
           viewNode.data.element,
           viewRefTree,
           viewRef,
+          viewNode,
         );
 
-        viewNode.data.viewRef = childViewRef;
+        // viewNode.data.viewRef = childViewRef;
       }
     });
 
     viewRef.compiled = true;
 
-    return viewRef;
+    return viewRefTree;
   }
 
   /**

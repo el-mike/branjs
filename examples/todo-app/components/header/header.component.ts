@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public onInit() {
+    console.log('HEADER INIT!');
     this.store.subscribe(state => {
       this.showBackBtn = true;
       this.viewRef.requestUpdate();

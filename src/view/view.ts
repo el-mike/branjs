@@ -30,14 +30,14 @@ export class View {
 
   private _componentFactory: ComponentFactory;
 
-  private _viewTree: Tree<ViewRef>;
+  private _viewRefTree: Tree<ViewRef>;
 
-  public get viewTree() {
-    return this._viewTree;
+  public get viewRefTree() {
+    return this._viewRefTree;
   }
 
-  public set viewTree(tree: Tree<ViewRef>) {
-    this._viewTree = tree;
+  public set viewRefTree(tree: Tree<ViewRef>) {
+    this._viewRefTree = tree;
   }
 
   private constructor(
@@ -66,17 +66,15 @@ export class View {
 
     assertEntryComponentRegistered(entryComponent);
 
-    const rootViewRef = this._compiler.compile(entryComponent, appHost);
+    this.viewRefTree = this._compiler.compile(entryComponent, appHost);
 
-    console.log(this._viewTree);
-    console.log(rootViewRef);
 
-    this._viewTree.traverseBF(treeNode => {
+    this._viewRefTree.traverseBF(treeNode => {
       const viewRef = treeNode.data;
 
       viewRef.init();
     });
 
-    this._viewTree.root.data.update();
+    this._viewRefTree.root.data.update();
   }
 }

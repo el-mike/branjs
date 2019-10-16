@@ -22,13 +22,13 @@ export class AppComponent implements OnInit {
   ) {}
 
   public onInit() {
-    console.log('POPUP INIT!');
+    console.log('APP INIT!');
     this.store.subscribe(state => {
-      console.log(this.viewRef);
+      // console.log(this.viewRef);
 
-      // this.showMainMenu = state.ui.currentView === View.MAIN_MENU;
+      this.showMainMenu = true;
       // this.showProperties = state.ui.currentView === View.PROPERTIES_LIST;
-      this.viewRef.requestUpdate();
+      // this.viewRef.requestUpdate();
     });
   }
 }
