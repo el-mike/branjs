@@ -9,6 +9,7 @@ body {
 .container {}
 
 .header {
+  height: 56px; 
   position: relative;
   justify-content: center;
   background-color: #f7f7f7;
@@ -72,27 +73,4 @@ body {
 .list .list-item:hover {
   background-color: #3486ef;
   color: #fff;
-}
-
-
-.properties-list-menu {
-  flex-direction: column;
-}
-
-.properties-list .list-item {
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.properties-list .list-item span {
-  width: 100%;
-}
-
-.properties-list .list-item .property-name {
-  font-weight: bold;
-}
-
-
-.properties-list .list-item .property-description {
-  font-size: 10px;
 }

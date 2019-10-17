@@ -5,8 +5,6 @@ import {
   Tree,
 } from '../../structs';
 
-import { View } from '../view';
-
 import {
   TemplateASTBinding,
   TemplateASTDirective,
@@ -20,8 +18,6 @@ import {
 } from '../component';
 
 import {
-  DirectiveType,
-  Directive,
   isIfDirective,
   IfDirective,
 } from '../directive';
@@ -59,7 +55,7 @@ export class Compiler {
   }
 
   /**
-   * Compiles ViewRef and descendants recursively, and returns the root ViewRef.
+   * Compile ViewRef and descendants recursively, and returns the root ViewRef.
    */
   private _compileViewRef<T>(
     component: Type<T>,
@@ -91,10 +87,25 @@ export class Compiler {
 
     if (!viewRefTree && !parentViewRef) {
       viewRefTree = new Tree<ViewRef>(viewRef);
+
+      /**
+       * For the root ViewRef renderHost needs to be set immediately,
+       * as app host will never change during the app's lifecycle.
+       * Every other ViewRef will get new renderHost from it's parent
+       * each time parent's ViewRef needs to be rendered.
+       */
+      viewRef.updateRenderHost(host);
     } else {
       viewRefTree.add(viewRef, parentViewRef);
     }
 
+    /**
+     * If hostViewNode is available (has been passed from the parent),
+     * bind current ViewRef to it.
+     * _compileViewRef methods needs to return viewRefTree,
+     * therefore it's impossible to assign ViewRef to related ViewNode
+     * in parent's compilation process.
+     */
     if (hostViewNode) {
       hostViewNode.data.viewRef = viewRef;
     }
@@ -114,7 +125,6 @@ export class Compiler {
      */
     viewRef.nodesTree.traverseDF(viewNode => {
       if (!viewNode.isRoot && viewNode.data.componentSelector) {
-        // const childViewRef = this._compileViewRef(
         this._compileViewRef(  
           this._componentsRegistry.getBySelector(viewNode.data.componentSelector),
           viewNode.data.element,
@@ -122,8 +132,6 @@ export class Compiler {
           viewRef,
           viewNode,
         );
-
-        // viewNode.data.viewRef = childViewRef;
       }
     });
 

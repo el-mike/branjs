@@ -1,15 +1,9 @@
 import {
   Tree,
   TreeNode,
-  Queue,
 } from '../structs';
 
-import { Binding } from './models';
-
 import {
-  DirectiveType,
-  Directive,
-  IfDirective,
   isIfDirective,
 } from './directive';
 
@@ -18,14 +12,14 @@ import { ComponentRef } from './component';
 import { ViewNode } from './view-node';
 
 export class ViewRef {
+  private _renderHost: HTMLElement;
+
   private _pendingUpdate: boolean;
 
   public compiled = false;
   public initialized = false;
   public rendered = false;
   public destroyed = false;
-
-  private _currentHostEl: Node;
 
   public get nodesTree() {
     return this._nodesTree;
@@ -45,18 +39,22 @@ export class ViewRef {
     this.initialized = true;
   }
 
+  public updateRenderHost(host: HTMLElement) {
+    this._renderHost = host;
+  }
+
   public requestUpdate() {
     if (this._pendingUpdate) {
       return;
     }
 
     this.update();
+    this.render();
   }
 
   /**
    * Traverse ViewRef's ViewNode Tree in order to update bindings
    * and directives.
-   * 
    * For every ViewNode visted we are applying it's bindings and directives,
    * and afterwards we are checking for related ViewRef - if it exists, we are
    * calling it's update method.
@@ -68,6 +66,10 @@ export class ViewRef {
    */
   public update() {
     this._pendingUpdate = true;
+
+    if (!this.initialized) {
+      this.init();
+    }
 
     if (!this._componentRef.initialized) {
       this._componentRef.init();
@@ -82,6 +84,7 @@ export class ViewRef {
        * and directives are dependant on component of it's parent ViewRef.
        */
       if (treeNode.isRoot) {
+
         return;
       }
 
@@ -92,14 +95,13 @@ export class ViewRef {
         }
 
         directive.run();
+
       });
 
       if (viewNode.viewRef && viewNode.active) {
         viewNode.viewRef.update();
       }
     });
-
-    this.render();
 
     this._pendingUpdate = false;
   }
@@ -109,26 +111,32 @@ export class ViewRef {
 
     this.rendered = true;
 
-    this._componentRef.setupEventHandlers(this.nodesTree.root.data.element as HTMLElement);
+    this.postRender();
   }
 
-  private _setupComponent() {
-
+  public postRender() {
+    this._componentRef.setupEventHandlers(this._renderHost);
   }
 
   private _renderNode(treeNode: TreeNode<ViewNode>, parentElement: Node = null) {
     const viewNode = treeNode.data;
 
     if (treeNode.isRoot) {
-      this._clearHostElement(viewNode.element);
-      this._renderChildNodes(treeNode, viewNode.element);
+      this._clearHostElement(this._renderHost);
+      this._renderChildNodes(treeNode, this._renderHost);
     } else {
-      const viewNodeElement = viewNode.element.cloneNode();
+      const viewNodeElement = viewNode.element.cloneNode() as HTMLElement;
 
       if (viewNode.active) {
         parentElement.appendChild(viewNodeElement);
 
         if (viewNode.viewRef) {
+          /**
+           * Each time child ViewRef is being rendered,
+           * it's renderHost needs to be updated, as it's parent
+           * already cloned the element ViewRef should be rendered in.
+           */
+          viewNode.viewRef.updateRenderHost(viewNodeElement);
           viewNode.viewRef.render();
         } else {
           this._renderChildNodes(treeNode, viewNodeElement);

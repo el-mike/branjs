@@ -15,7 +15,8 @@ import * as fromState from '../../+state';
   selector: 'appHeader'
 })
 export class HeaderComponent implements OnInit {
-  public showBackBtn = true;
+  public test = true;
+  public test2 = false;
 
   constructor(
     private store: Store<fromState.AppState>,
@@ -28,13 +29,15 @@ export class HeaderComponent implements OnInit {
   })
   public goToMainMenu() {
     console.log('goingToMainMenu');
+    this.test = !this.test;
+    this.test2 = !this.test2;
+    this.viewRef.requestUpdate();
   }
 
   public onInit() {
     console.log('HEADER INIT!');
     this.store.subscribe(state => {
-      this.showBackBtn = true;
-      this.viewRef.requestUpdate();
+      // this.viewRef.requestUpdate();
     });
   }
 }

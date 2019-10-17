@@ -46,7 +46,7 @@ export class View {
   ) {
     this._componentFactory = ComponentFactory.getInstance(this._rootInjector, this);
 
-    this._parser = Parser.getInstance(document);
+    this._parser = Parser.getInstance();
     this._compiler = Compiler.getInstance(this._parser, this._componentFactory, this._componentsRegistry);
   }
 
@@ -67,14 +67,8 @@ export class View {
     assertEntryComponentRegistered(entryComponent);
 
     this.viewRefTree = this._compiler.compile(entryComponent, appHost);
+    console.log(this.viewRefTree);
 
-
-    this._viewRefTree.traverseBF(treeNode => {
-      const viewRef = treeNode.data;
-
-      viewRef.init();
-    });
-
-    this._viewRefTree.root.data.update();
+    this._viewRefTree.root.data.requestUpdate();
   }
 }

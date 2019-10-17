@@ -1,5 +1,3 @@
-import { isFunction } from '../../utils';
-
 import { Tree } from '../../structs';
 
 import { DirectiveType } from '../directive';
@@ -16,11 +14,11 @@ import { INTERPOLATION_REGEXP } from './reg-exp';
 export class Parser {
   private static _instance: Parser;
 
-  private constructor(private documentRef: Document) {}
+  private constructor() {}
 
-  public static getInstance(documentRef: Document = document) {
+  public static getInstance() {
     if (!Parser._instance) {
-      Parser._instance = new Parser(documentRef);
+      Parser._instance = new Parser();
     }
 
     return Parser._instance;
