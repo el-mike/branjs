@@ -1,3 +1,4 @@
+@import './styles/variables.scss';
 @import "./styles/base.scss";
 @import "./styles/buttons.scss";
 @import "./styles/inputs.scss";
@@ -6,15 +7,20 @@ body {
   margin: 0;
 }
 
-.container {}
+.container {
+  background-color: $secondary;
+  min-height: 100vh;
+
+  color: $light;
+}
 
 .header {
   height: 56px; 
   position: relative;
   justify-content: center;
-  background-color: #f7f7f7;
+  background-color: $accent;
 
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid $primary;
 }
 
 .header img {

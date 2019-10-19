@@ -1,7 +1,7 @@
 {
   "name": "branjs",
   "version": "1.0.0",
-  "description": "Simple FE framework which could have done some more.",
+  "description": "Simple, Angular-like frontend framework with built-in store.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
     "build:watch": "webpack --watch",
     "dev": "webpack-dev-server --open"
   },
-  "author": "elMike",
+  "author": "el-Mike",
   "license": "ISC",
   "devDependencies": {
     "clean-webpack-plugin": "^2.0.2",
@@ -29,7 +29,6 @@
     "webpack-dev-server": "^3.8.2"
   },
   "dependencies": {
-    "@types/chrome": "0.0.85",
     "reflect-metadata": "^0.1.13"
   }
 }

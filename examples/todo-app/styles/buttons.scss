@@ -1,3 +1,5 @@
+@import './styles/variables.scss';
+
 .btn {
   cursor: pointer;
   display: inline-block;
@@ -27,4 +29,19 @@
   color: #9fa9ba;
   background-color: #fff;
   border-color: #e6e6e6;
+}
+
+.icon-btn {
+  height: 30px;
+  width: 30px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  justify-content: center;
+  color: $light;
+}
+
+.icon-btn:hover {
+  background-color: #3486ef;
+  color: #fff;
 }
