@@ -16,7 +16,10 @@ import {
 } from './+state';
 
 import {
+  ShellComponent,
   HeaderComponent,
+  TodoItemComponent,
+  TodoListComponent,
 } from './components';
 
 import { AppComponent } from './app.component';
@@ -34,11 +37,14 @@ const platform = Platform.getInstance();
     { provide: Store, useFactory: StoreFactory },
   ],
   components: [
+    ShellComponent,
     HeaderComponent,
+    TodoItemComponent,
+    TodoListComponent,
   ],
 })
-class PopupApp {}
+class TodoApp {}
 
-const container = document.querySelector('.container') as HTMLElement;
+const container = document.querySelector('#app-root') as HTMLElement;
 
-platform.bootstrap(PopupApp, container);
+platform.bootstrap(TodoApp, container);

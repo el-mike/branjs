@@ -57,6 +57,8 @@ export class Parser {
       astNode.addDirective(ifDirective);
     }
 
+    // this._getInputs(element);
+
     this._getBindings(element)
       .map(binding => astNode.addBinding(binding));
 
@@ -72,6 +74,13 @@ export class Parser {
       return null;
     }
     return element.getAttribute(ATTRS.SELECTOR) || null;
+  }
+
+  private _getInputs(element: HTMLElement) {
+    if (element.nodeType === Node.TEXT_NODE) {
+      return null;
+    }
+    return element.getAttribute('bn-input-testPropTest') || null;
   }
 
   private _getIfDirective(element: HTMLElement) {

@@ -23,12 +23,6 @@ export class AppComponent implements OnInit {
 
   public onInit() {
     console.log('APP INIT!');
-    this.store.subscribe(state => {
-      // console.log(this.viewRef);
-
-      this.showMainMenu = true;
-      // this.showProperties = state.ui.currentView === View.PROPERTIES_LIST;
-      // this.viewRef.requestUpdate();
-    });
+    this.store.subscribe(state => {});
   }
 }

@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   @EventHandler({
-    selector: '#mainMenuBtn',
+    selector: '#addTodoBtn',
     event: 'click'
   })
   public goToMainMenu() {

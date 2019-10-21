@@ -24,7 +24,7 @@ import {
 
 import {
   Binding
-} from '../models';
+} from '../binding';
 
 import { ViewNode } from '../view-node';
 import { ViewRef } from '../view-ref';
@@ -68,7 +68,7 @@ export class Compiler {
 
     /**
      * Get Abstract Syntax Tree for given component's template.
-     * Child components won't be included, as they are not the concern
+     * Child components won't be included, as they are not concern
      * of the given ViewRef.
      * Child components are not even resolved at this point.
      * 

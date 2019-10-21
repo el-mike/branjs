@@ -1,4 +1,4 @@
-import { Binding } from './models';
+import { Binding } from './binding';
 
 import {
   DirectiveType,

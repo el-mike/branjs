@@ -84,7 +84,6 @@ export class ViewRef {
        * and directives are dependant on component of it's parent ViewRef.
        */
       if (treeNode.isRoot) {
-
         return;
       }
 

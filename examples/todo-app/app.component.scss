@@ -1,82 +1,10 @@
-@import './styles/variables.scss';
-@import "./styles/base.scss";
-@import "./styles/buttons.scss";
-@import "./styles/inputs.scss";
+@import "styles/custom";
+@import "~bootstrap/scss/bootstrap";
 
-body {
-  margin: 0;
-}
-
-.container {
-  background-color: $secondary;
+.app-container {
   min-height: 100vh;
-
-  color: $light;
 }
 
-.header {
-  height: 56px; 
-  position: relative;
-  justify-content: center;
-  background-color: $accent;
-
-  border-bottom: 1px solid $primary;
-}
-
-.header img {
-  width: 100px;
-}
-
-.header .arrow-back-btn {
-  position: absolute;
-  left: 20px;
-  top: 15px;
-  margin-right: 20px;
-}
-
-.main-menu {}
-
-.menu-header {
-  padding: 0;
-  margin: 0;
-  flex-direction: row;
-  font-size: 18px;
-  font-weight: 600;
-  color: #3486ef;
-  padding: 10px 20px;;
-  background-color: #fff;
-  justify-content: flex-start;
-  align-items: center;
-  user-select: none;
-  border-bottom: 1px solid #e6e6e6;
-}
-
-.list {
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  flex-direction: column;
-}
-
-.list .list-item {
-  height: 30px;
-  font-size: 14px;
-  color: #2b2e33;
-  padding: 10px 20px;;
-  background-color: #fff;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-}
-
-.list .list-item .arrow {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 20px;
-}
-
-.list .list-item:hover {
-  background-color: #3486ef;
-  color: #fff;
+.todo-item {
+  border-bottom: 1px solid $dark;
 }
