@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  EventHandler,
 } from '@bran/view';
 
 @Component({
@@ -9,6 +10,14 @@ import {
 })
 export class TodoItemComponent implements OnInit {
   constructor() {}
+
+  @EventHandler({
+    selector: '#completeTodoBtn',
+    event: 'click'
+  })
+  public completeTodo() {
+    console.log('TODO COMPLETED!');
+  }
 
   public onInit() {
     console.log('TODOITEM INIT!');

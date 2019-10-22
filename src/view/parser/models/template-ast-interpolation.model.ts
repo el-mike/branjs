@@ -1,6 +1,7 @@
-export class TemplateASTInterpolation {
-  public constructor(
-    public hostElement: Node,
-    public expression: string,
-  ) {}
+import { TemplateASTBindingTarget } from './template-ast-binding-target.model';
+
+export class TemplateASTInterpolation extends TemplateASTBindingTarget {
+  public constructor() {
+    super();
+  }
 }

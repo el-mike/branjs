@@ -1,24 +1,31 @@
 import { Tree } from '../../structs';
 
-import { DirectiveType } from '../directive';
-
 import {
   TemplateASTNode,
   TemplateASTBinding,
-  TemplateASTDirective,
 } from './models';
 
-import { ATTRS } from './attributes';
-import { INTERPOLATION_REGEXP } from './reg-exp';
+import { PATTERNS } from './patterns';
+import {
+  INTERPOLATION_REGEXP,
+  MATCH_NAMESPACE_REGEXP,
+  IS_SELECTOR_REGEXP,
+} from './reg-exp';
+
+import { TemplateASTBindingTargetFactory } from './template-ast-binding-target.factory';
 
 export class Parser {
   private static _instance: Parser;
 
-  private constructor() {}
+  private constructor(
+    private readonly _templateASTBindingTargetFactory: TemplateASTBindingTargetFactory,
+  ) {}
 
-  public static getInstance() {
+  public static getInstance(
+    templateASTBindingTargetFactory: TemplateASTBindingTargetFactory
+  ) {
     if (!Parser._instance) {
-      Parser._instance = new Parser();
+      Parser._instance = new Parser(templateASTBindingTargetFactory);
     }
 
     return Parser._instance;
@@ -51,20 +58,21 @@ export class Parser {
     }
 
     astNode.componentSelector = this._getComponentSelector(element);
-    const ifDirective = this._getIfDirective(element);
 
-    if (ifDirective) {
-      astNode.addDirective(ifDirective);
+    if (element.nodeType === Node.TEXT_NODE) {
+      this._getInterpolationBindings(element)
+        .forEach(binding => astNode.addBinding(binding));
+    } else {
+      this._getAttributeBindings(element)
+        .forEach(binding => astNode.addBinding(binding));
     }
 
-    // this._getInputs(element);
-
-    this._getBindings(element)
-      .map(binding => astNode.addBinding(binding));
-
-    astNode.element.childNodes.forEach(childNode => {
-      this._parseElement(childNode as HTMLElement, astNode, astTree);
-    });
+    astNode.element.childNodes
+      .forEach(childNode => {
+        if (childNode.nodeType !== Node.COMMENT_NODE) {
+          this._parseElement(childNode as HTMLElement, astNode, astTree);
+        }
+      });
 
     return astTree;
   }
@@ -73,31 +81,37 @@ export class Parser {
     if (element.nodeType === Node.TEXT_NODE) {
       return null;
     }
-    return element.getAttribute(ATTRS.SELECTOR) || null;
+
+    return element.getAttribute(PATTERNS.SELECTOR) || null;
   }
 
-  private _getInputs(element: HTMLElement) {
+  private _getAttributeBindings(element: HTMLElement) {
     if (element.nodeType === Node.TEXT_NODE) {
-      return null;
-    }
-    return element.getAttribute('bn-input-testPropTest') || null;
-  }
-
-  private _getIfDirective(element: HTMLElement) {
-    if (element.nodeType === Node.TEXT_NODE) {
-      return null;
+      return [];
     }
 
-    const propName = element.getAttribute(ATTRS.IF);
+    return element
+      .getAttributeNames()
+      .filter(attributeName => MATCH_NAMESPACE_REGEXP.test(attributeName))
+      .filter(attributeName => !IS_SELECTOR_REGEXP.test(attributeName))
+      .map(attributeName => {
+        const bindingTarget = this._templateASTBindingTargetFactory.create(attributeName);
+        const expression = element.getAttribute(attributeName);
 
-    return propName
-      ? new TemplateASTDirective(DirectiveType.IF, element, propName)
-      : null;
+        return new TemplateASTBinding(
+          element,
+          bindingTarget,
+          expression,
+        );
+      });
   }
 
-  private _getBindings(element: Node) {
+  private _getInterpolationBindings(element: HTMLElement) {
+    if (element.nodeType !== Node.TEXT_NODE) {
+      return [];
+    }
+
     const innerText = element.textContent;
-
     /**
      * Interpolation brackets themselves makes 4 characters already,
      * it does not make sense to create a binding when there is less than 5 characters
@@ -107,14 +121,19 @@ export class Parser {
       return [];
     }
 
-    const bindingTokens = innerText.match(INTERPOLATION_REGEXP) || [];
+    return (innerText.match(INTERPOLATION_REGEXP) || [])
+      .map(lexeme => {
+        const bindingTarget = this._templateASTBindingTargetFactory.create(lexeme);
+        const expression = lexeme
+          .replace('{{', '')
+          .replace('}}', '')
+          .trim();
 
-    return bindingTokens.map(token => {
-      const propName = token
-        .replace('{{', '')
-        .replace('}}', '');
-
-      return new TemplateASTBinding(element, propName);
-    });
+        return new TemplateASTBinding(
+          element,
+          bindingTarget,
+          expression
+        );
+      });
   }
 }

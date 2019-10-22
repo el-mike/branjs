@@ -90,7 +90,7 @@ export class ViewRef {
       const viewNode = treeNode.data;
       viewNode.directives.forEach(directive => {
         if (isIfDirective(directive)) {
-          directive.updateValue(componentInstance[directive.propName]);
+          // directive.updateValue(componentInstance[directive.propName]);
         }
 
         directive.run();

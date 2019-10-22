@@ -26,6 +26,10 @@ import {
   Binding
 } from '../binding';
 
+import {
+  BindingBuilder,
+} from './binding.builder';
+
 import { ViewNode } from '../view-node';
 import { ViewRef } from '../view-ref';
 
@@ -36,15 +40,22 @@ export class Compiler {
     private readonly _parser: Parser,
     private readonly _componentFactory: ComponentFactory,
     private readonly _componentsRegistry: ComponentsRegistry,
+    private readonly _bindingBuilder: BindingBuilder,
   ) {}
 
   public static getInstance(
     parser: Parser,
     componentFactory: ComponentFactory,
     componentsRegistry: ComponentsRegistry,
+    bindingBuilder: BindingBuilder,
   ) {
     if (!Compiler._instance) {
-      Compiler._instance = new Compiler(parser, componentFactory, componentsRegistry);
+      Compiler._instance = new Compiler(
+        parser,
+        componentFactory,
+        componentsRegistry,
+        bindingBuilder,
+      );
     }
 
     return Compiler._instance;
@@ -65,6 +76,8 @@ export class Compiler {
     hostViewNode: TreeNode<ViewNode> = null,
   ) {
     const componentRef = this._componentFactory.create(component, host);
+
+    console.log('_compileViewRef', componentRef.selector);
 
     /**
      * Get Abstract Syntax Tree for given component's template.
@@ -169,22 +182,10 @@ export class Compiler {
     const viewNode = new ViewNode(astNode.element);
 
     viewNode.componentSelector = astNode.componentSelector;
-    viewNode.bindings = astNode.bindings.map(binding => this._buildBinding(binding, viewNode));
-    
-    astNode.directives.forEach(directive => {
-      viewNode.directives.set(directive.type, this._buildDirective(directive, viewNode));
-    });
+
+    viewNode.bindings = astNode.bindings
+      .map(astBinding => this._bindingBuilder.build(astBinding, viewNode));
 
     return viewNode;
-  }
-
-  private _buildBinding(binding: TemplateASTBinding, viewNode: ViewNode) {
-    return new Binding(viewNode, binding.propName, null);
-  }
-
-  private _buildDirective(directive: TemplateASTDirective, viewNode: ViewNode) {
-    if (isIfDirective(directive)) {
-      return new IfDirective(viewNode, directive.propName, null);
-    }
   }
 }

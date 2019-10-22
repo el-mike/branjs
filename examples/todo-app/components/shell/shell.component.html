@@ -1,8 +1,10 @@
 <div class="shell">
-  <div bn-selector="appHeader"></div>
+  <div bn-selector="appHeader" bn-if="test" bn-output-addTodo="addTodo"></div>
 
-  <section class="container py-4">
-    <div bn-selector="appTodoList"></div>
+  <section class="container py-4" bn-if="test">
+    <div bn-selector="appTodoList" bn-input-todos="todos"></div>
   </section>
+
+  <div class="interpolation">{{ interpolationTest }}</div>
 </div>
 

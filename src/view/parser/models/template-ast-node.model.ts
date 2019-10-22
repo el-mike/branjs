@@ -6,11 +6,9 @@ export class TemplateASTNode {
 
   public componentSelector?: string;
   public bindings?: TemplateASTBinding[];
-  public directives?: TemplateASTDirective[];
   
   public constructor(public element: HTMLElement) {
     this.bindings = [];
-    this.directives = [];
   }
 
   public addBinding(binding: TemplateASTBinding) {
@@ -19,13 +17,5 @@ export class TemplateASTNode {
     }
 
     this.bindings.push(binding);
-  }
-
-  public addDirective(directive: TemplateASTDirective) {
-    if (!directive) {
-      return;
-    }
-
-    this.directives.push(directive);
   }
 }

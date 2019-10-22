@@ -1,18 +1,23 @@
-import { Type } from '../models';
-
 import { Tree } from '../structs';
 
 import { RootInjector } from '../di';
 
-import { Parser } from './parser';
-import { Compiler } from './compiler';
+import {
+  Parser,
+  TemplateASTBindingTargetFactory,
+} from './parser';
+
+import {
+  Compiler,
+  BindingBuilder,
+  BindingTargetFactory,
+} from './compiler';
 
 import {
   assertEntryComponentRegistered,
 } from './assertions';
 
 import {
-  getComponentMetadata,
   ComponentsRegistry,
 } from './component';
 
@@ -46,8 +51,19 @@ export class View {
   ) {
     this._componentFactory = ComponentFactory.getInstance(this._rootInjector, this);
 
-    this._parser = Parser.getInstance();
-    this._compiler = Compiler.getInstance(this._parser, this._componentFactory, this._componentsRegistry);
+    const templateASTBindingTargetFactory = TemplateASTBindingTargetFactory.getInstance();
+
+    this._parser = Parser.getInstance(templateASTBindingTargetFactory);
+
+    const bindingTargetFactory = BindingTargetFactory.getInstance();
+    const bindingBuilder = BindingBuilder.getInstance(bindingTargetFactory);
+
+    this._compiler = Compiler.getInstance(
+      this._parser,
+      this._componentFactory,
+      this._componentsRegistry,
+      bindingBuilder,
+    );
   }
 
   public static getInstance(

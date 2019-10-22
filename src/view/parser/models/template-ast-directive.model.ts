@@ -1,9 +1,11 @@
 import { DirectiveType } from '../../directive';
 
-export class TemplateASTDirective {
+import { TemplateASTBindingTarget } from './template-ast-binding-target.model';
+
+export class TemplateASTDirective extends TemplateASTBindingTarget {
   constructor(
     public type: DirectiveType,
-    public hostElement: HTMLElement,
-    public propName: string,
-  ) {}
+  ) {
+    super();
+  }
 }
